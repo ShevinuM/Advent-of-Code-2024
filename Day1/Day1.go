@@ -41,6 +41,17 @@ func main() {
 
 	}
 
+	similarityScore := 0
+	for _, leftvalue := range leftList {
+		occurences := 0
+		for _, rightValue := range rightList {
+			if leftvalue == rightValue {
+				occurences++
+			}
+		}
+		similarityScore = similarityScore + occurences*leftvalue
+	}
+
 	sort.Slice(leftList, func(i, j int) bool {
 		return leftList[i] > leftList[j]
 	})
@@ -57,6 +68,8 @@ func main() {
 		difference := math.Abs(float64(lastLeft - lastRight))
 		sum += int(difference)
 	}
-	fmt.Println("Sum : ", sum)
+	fmt.Println("Part 1 : ", sum)
+
+	fmt.Println("Part 2 : ", similarityScore)
 
 }
