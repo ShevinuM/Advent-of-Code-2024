@@ -6,9 +6,10 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
-func read() string{
+func read() string {
 	file, err := os.Open("input2.txt")
 	if err != nil {
 		fmt.Println(err)
@@ -43,8 +44,24 @@ func part1(input string) int {
 	return sum
 }
 
+func part2(input string) int {
+	parts := strings.Split(input, "do")
+	sum := 0
+	count := 0
+	for _, part := range parts {
+		if count == 0 && !strings.HasPrefix(part, "n't()") {
+			sum = sum + part1(part)
+		} else if !strings.HasPrefix(part, "n't()") && strings.HasPrefix(part, "()") {
+			sum = sum + part1(part)
+		}
+	}
+	return sum
+}
+
 func main() {
 	content := read()
 	part1 := part1(content)
 	fmt.Println("Part 1: ", part1)
+	part2 := part2(content)
+	fmt.Println("Part 2: ", part2)
 }
