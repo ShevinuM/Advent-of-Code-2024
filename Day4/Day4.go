@@ -81,8 +81,28 @@ func part1(lines [][]rune) int {
 	return sum
 }
 
+func part2(lines [][]rune) int {
+	sum := 0
+	lenY := len(lines)
+	lenX := len(lines[0])
+	for y := 0; y < lenY; y++ {
+		for x := 0; x < lenX; x++ {
+			if lines[y][x] == 'A' {
+				if y-1 >= 0 && x-1 >= 0 && y+1 < lenY && x+1 < lenX {
+					if (lines[y-1][x-1] == 'M' && lines[y+1][x+1] == 'S' || lines[y-1][x-1] == 'S' && lines[y+1][x+1] == 'M') && (lines[y-1][x+1] == 'M' && lines[y+1][x-1] == 'S' || lines[y-1][x+1] == 'S' && lines[y+1][x-1] == 'M') {
+						sum += 1
+					}
+				}
+			}
+		}
+	}
+	return sum
+}
+
 func main() {
 	lines := read("input2.txt")
 	part1 := part1(lines)
 	fmt.Println(part1)
+	part2 := part2(lines)
+	fmt.Println(part2)
 }
