@@ -122,7 +122,6 @@ func part2(pageOrder map[int][]int, pages [][]int, pageOrderReverse map[int][]in
 		middleIndex := len(update) / 2
 		if !valid {
 			newUpdate := sort(pageOrder, update, pageOrderReverse)
-			fmt.Println(newUpdate)
 			middleElement := newUpdate[middleIndex]
 			sum += middleElement
 		}
