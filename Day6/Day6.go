@@ -8,8 +8,9 @@ import (
 )
 
 type Coordinate struct {
-	Y int
-	X int
+	y int
+	x int
+	val rune
 }
 
 func parse(filename string) [][]rune {
@@ -93,7 +94,7 @@ func part1(matrix [][]rune) int {
 			currDirec = nextDir
 			moveCoords = getMoveCoordinates(currDirec)
 		}
-		coord := Coordinate{Y: y, X: x}
+		coord := Coordinate{y: y, x: x, val: '?'}
 		matrix[y][x] = 'X'
 		visited.Add(coord)
 		y = y + moveCoords[0]
@@ -102,8 +103,67 @@ func part1(matrix [][]rune) int {
 	return visited.Cardinality()
 }
 
+func copyMatrix(matrix [][]rune) [][]rune {
+	matrixCopy := make([][]rune, len(matrix))
+	for i := range matrix {
+			matrixCopy[i] = make([]rune, len(matrix[i]))
+			copy(matrixCopy[i], matrix[i])
+	}
+	return matrixCopy
+}
+
+func part2(matrix [][]rune) int {
+	sum := 0
+	for i := 0; i < len(matrix); i++ {
+		for j := 0; j < len(matrix[0]); j++ {
+			character := matrix[i][j]
+			if character != '#' && character != '^' && character != 'v' && character != '>' && character != '<' {
+				matrix[i][j] = '#'
+				isloop := isLoop(copyMatrix(matrix))
+				if isloop {
+					sum = sum + 1
+				}
+				matrix[i][j] = '.'
+			}
+		}
+	}
+	return sum
+}
+
+func isLoop(matrix [][]rune) bool {
+	y, x := findStart(matrix)
+	if y == -1 || x == -1 {
+		return false
+	}
+	visited := mapset.NewSet[Coordinate]() 
+	moveCoords := getMoveCoordinates(matrix[y][x])
+	currDirec := matrix[y][x]
+	for y >= 0 && y < len(matrix) && x >= 0 && x < len(matrix[0]) {
+		coord := Coordinate{y: y, x: x, val: currDirec}
+		if matrix[y][x] == '#' {
+			y = y - moveCoords[0]
+			x = x - moveCoords[1]
+			nextDir := getNextDirection(currDirec)
+			currDirec = nextDir
+			moveCoords = getMoveCoordinates(currDirec)
+			coord = Coordinate{y: y, x: x, val: currDirec}
+		}
+		if visited.Contains(coord) {
+			return true
+		}
+		visited.Add(coord)
+		matrix[y][x] = 'X'
+		y = y + moveCoords[0]
+		x = x + moveCoords[1]
+
+	}
+	return false
+}
+
 func main() {
 	parsedInput := parse("input2.txt")
-	part1 := part1(parsedInput)
+	part1 := part1(copyMatrix(parsedInput))
 	fmt.Println(part1)
+	part2 := part2(copyMatrix(parsedInput))
+	fmt.Println(part2)
 }
