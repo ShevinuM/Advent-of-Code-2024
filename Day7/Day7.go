@@ -60,6 +60,9 @@ func calc(vals []int, operator rune, currSum int, targetSum int) bool {
 	if len(vals) == 0 {
 		return currSum == targetSum
 	}
+	if currSum > targetSum {
+		return false
+	}
 	x, vals := vals[0], vals[1:]
 	if operator == '+' {
 		currSum += x
@@ -69,18 +72,26 @@ func calc(vals []int, operator rune, currSum int, targetSum int) bool {
 	return calc(append([]int(nil), vals...), '+', currSum, targetSum) || calc(append([]int(nil), vals...), '*', currSum, targetSum)
 }
 
+func getConcatVal(currSum int, x int) int {
+	mul := 1
+	for temp := x; temp > 0; temp /= 10 {
+		mul *= 10
+	}
+	return currSum * mul + x
+}
+
 func calc2(vals []int, operator rune, currSum int, targetSum int) bool {
 	if len(vals) == 0 {
 		return currSum == targetSum
+	}
+	if currSum > targetSum {
+		return false
 	}
 	x, vals := vals[0], vals[1:]
 	if operator == '+' {
 		currSum += x
 	} else if operator == '|' {
-		strA := strconv.Itoa(currSum)
-		strB := strconv.Itoa(x)
-		str := strA + strB
-		currSum, _ = strconv.Atoi(str)
+		currSum = getConcatVal(currSum, x)
 	} else {
 		currSum *= x
 	}
