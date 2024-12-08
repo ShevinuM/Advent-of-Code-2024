@@ -22,7 +22,7 @@ func parse(filename string) (map[int]map[int][]int, error) {
 	count := 0
 	for {
 		line, err := r.ReadString('\n')
-		if err != nil && err != io.EOF{
+		if err != nil && err != io.EOF {
 			return nil, err
 		}
 		if err == io.EOF {
@@ -84,7 +84,7 @@ func calc2(vals []int, operator rune, currSum int, targetSum int) bool {
 	} else {
 		currSum *= x
 	}
-	return calc2(append([]int(nil), vals...), '+', currSum, targetSum) || calc2(append([]int(nil), vals...), '*', currSum, targetSum) || calc2(append([]int(nil), vals...), '|', currSum, targetSum) 
+	return calc2(append([]int(nil), vals...), '+', currSum, targetSum) || calc2(append([]int(nil), vals...), '*', currSum, targetSum) || calc2(append([]int(nil), vals...), '|', currSum, targetSum)
 }
 
 func part2(input map[int]map[int][]int) int {
