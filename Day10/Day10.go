@@ -45,7 +45,7 @@ func bfs(topoMap [][]int, trailHead Coordinate, part int) int {
 	lenX := len(topoMap[0])
 	sum := 0
 	var queue []Coordinate
-	visited := make(map[Coordinate]struct{})
+	visited := make(Set)
 	queue = append(queue, trailHead)
 	directions := []Coordinate{{y: 0, x: 1, val: 0}, {y: 0, x: -1, val: 0}, {y: 1, x: 0, val: 0}, {y: -1, x: 0, val: 0}}
 	for len(queue) > 0 {
@@ -57,7 +57,7 @@ func bfs(topoMap [][]int, trailHead Coordinate, part int) int {
 			newVal := trailPoint.val + 1
 			newCoordinate := Coordinate{y: newY, x: newX, val: newVal}
 			if newY >= 0 && newY < lenY && newX >= 0 && newX < lenX && newVal == 9 && newVal == topoMap[newY][newX] {
-				if part == 1 {
+				if part == 1 && _, ok := visited[newCoordinate]; !ok {
 					if _, ok := visited[newCoordinate]; !ok {
 						sum++
 					}
