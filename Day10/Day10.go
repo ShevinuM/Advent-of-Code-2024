@@ -57,7 +57,7 @@ func bfs(topoMap [][]int, trailHead Coordinate, part int) int {
 			newVal := trailPoint.val + 1
 			newCoordinate := Coordinate{y: newY, x: newX, val: newVal}
 			if newY >= 0 && newY < lenY && newX >= 0 && newX < lenX && newVal == 9 && newVal == topoMap[newY][newX] {
-				if part == 1 && _, ok := visited[newCoordinate]; !ok {
+				if part == 1 {
 					if _, ok := visited[newCoordinate]; !ok {
 						sum++
 					}
